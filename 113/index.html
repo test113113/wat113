@@ -255,6 +255,11 @@
 <!-- 배경음악 플레이어 (탭 메뉴 위에 위치) -->
 <div class="audio-player">
   <button id="bgm_toggle">▶ 재생</button>
+
+  <!-- 추가된 볼륨 조절 버튼 -->
+  <button id="volume_down">🔉</button>
+  <span id="volume_display">5</span>
+  <button id="volume_up">🔊</button>
 </div>
 <script>
   // 오디오 요소 생성 및 설정
@@ -266,6 +271,10 @@
   document.querySelector('.audio-player').appendChild(bgmAudio);
   
   const bgmToggle = document.getElementById('bgm_toggle');
+  const volumeDown = document.getElementById('volume_down'); // 추가된 볼륨 감소 버튼
+  const volumeUp = document.getElementById('volume_up');     // 추가된 볼륨 증가 버튼
+  const volumeDisplay = document.getElementById('volume_display'); // 현재 볼륨 표시
+
   bgmToggle.addEventListener('click', function(){
     if(bgmAudio.paused) {
       bgmAudio.play();
@@ -274,6 +283,22 @@
       bgmAudio.pause();
       bgmToggle.innerHTML = "▶ 재생";
     }
+  });
+  // 볼륨 조절 함수 추가
+  function adjustVolume(change) {
+    let newVolume = Math.min(10, Math.max(0, Math.round(bgmAudio.volume * 10) + change)); // 0~10 범위 제한
+    bgmAudio.volume = newVolume / 10; // 0.0~1.0로 변환
+    volumeDisplay.textContent = newVolume; // UI 업데이트
+  }
+
+  // 볼륨 감소 버튼 이벤트 추가
+  volumeDown.addEventListener('click', function(){
+    adjustVolume(-1);
+  });
+
+  // 볼륨 증가 버튼 이벤트 추가
+  volumeUp.addEventListener('click', function(){
+    adjustVolume(1);
   });
 </script>
 
