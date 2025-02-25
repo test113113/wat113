@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>계산기 탭 페이지</title>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  <style>
+    /* 오디오 플레이어 스타일 */
+    .audio-player {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .audio-player button {
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    /* 탭 메뉴 스타일 */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #f8f9fa;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      margin-right: 2px;
+    }
+    .tab.active {
+      background-color: #fff;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
+      border: 1px solid #ccc;
+      padding: 15px;
+      background-color: #fff;
+    }
+    /* 공통 컨테이너 스타일 */
+    .container {
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+    /* 가속계산기 스타일 */
+    .accel-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 20px;
+      margin-bottom: 15px;
+    }
+    .accel-input {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .accel-input label {
+      margin-bottom: 5px;
+      font-size: 16px;
+      color: #333;
+    }
+    .accel-input input {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .accel-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    .accel-buttons button {
+      width: 48%;
+      padding: 10px;
+      font-size: 16px;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .calculate-btn {
+      background-color: #007bff;
+      color: #fff;
+    }
+    .reset-btn {
+      background-color: #dc3545;
+      color: #fff;
+    }
+    #accel_result {
+      font-size: 20px;
+      color: red;
+      font-weight: bold;
+      text-align: center;
+    }
+    #accel_score_btn {
+      display: none;
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    /* 황금조각 계산기 스타일 */
+    .skill-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 20px;
+      row-gap: 10px;
+    }
+    .skill-input {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .skill-input label {
+      margin-bottom: 5px;
+      font-size: 16px;
+      color: #333;
+    }
+    .skill-input input {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .buttons {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .buttons button {
+      width: 48%;
+      padding: 10px;
+      font-size: 16px;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #gold_result {
+      margin-top: 15px;
+      font-size: 20px;
+      color: red;
+      font-weight: bold;
+    }
+    /* 채팅방 정보 스타일 */
+    .chat-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .chat-buttons a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .discord-btn {
+      background-color: #5765EB;
+      color: #fff;
+    }
+    .kakao-btn {
+      background-color: #FAE301;
+      color: #000;
+    }
+    .chat-buttons img {
+      height: 24px;
+      width: 24px;
+      vertical-align: middle;
+    }
+    /* 반응형 */
+    @media (max-width: 480px) {
+      .container {
+        width: 95%;
+        padding: 20px;
+      }
+      .tab {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+      .accel-input label, .skill-input label {
+        font-size: 14px;
+      }
+      .accel-input input, .skill-input input {
+        font-size: 16px;
+        padding: 8px;
+      }
+      button, .chat-buttons a, #accel_score_btn {
+        font-size: 14px;
+        padding: 8px;
+      }
+      #accel_result, #gold_result {
+        font-size: 18px;
+      }
+      .chat-buttons img {
+        height: 20px;
+        width: 20px;
+      }
+      .audio-player input {
+        font-size: 14px;
+      }
+      .audio-player button {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+  <script>
+    $(document).ready(function(){
+      // 탭 클릭 이벤트 처리
+      $('.tab').click(function(){
+        $('.tab').removeClass('active');
+        $(this).addClass('active');
+        var tabId = $(this).data('tab');
+        $('.tab-content').hide();
+        $('#' + tabId).show();
+      });
+      // 초기: 첫 번째 탭 보이기
+      $('.tab').first().click();
+    });
+  </script>
+  <script>
+    // 호스팅 경로에 업로드한 노래의 URL (실제 URL로 수정하세요)
+    const bgmUrl = "Loggle_song.mp3";
+  </script>
+</head>
+<body>
+
+<!-- 배경음악 플레이어 (탭 메뉴 위에 위치) -->
+<div class="audio-player">
+  <button id="bgm_toggle">▶ 재생</button>
+</div>
+<script>
+  // 오디오 요소 생성 및 설정
+  const bgmAudio = document.createElement('audio');
+  bgmAudio.id = 'bgm';
+  bgmAudio.src = bgmUrl;
+  bgmAudio.loop = true; // 반복 재생
+  // 플레이어 상에 오디오 요소를 숨김 처리 후 추가
+  document.querySelector('.audio-player').appendChild(bgmAudio);
+  
+  const bgmToggle = document.getElementById('bgm_toggle');
+  bgmToggle.addEventListener('click', function(){
+    if(bgmAudio.paused) {
+      bgmAudio.play();
+      bgmToggle.innerHTML = "|| 일시정지";
+    } else {
+      bgmAudio.pause();
+      bgmToggle.innerHTML = "▶ 재생";
+    }
+  });
+</script>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab" data-tab="tab1">가속계산기</div>
+    <div class="tab" data-tab="tab2">황금조각 계산기</div>
+    <div class="tab" data-tab="tab3">채팅방 정보</div>
+  </div>
+  
+  <!-- 탭 1: 가속계산기 -->
+  <div id="tab1" class="tab-content">
+    <h3>가속계산기</h3>
+    <div class="accel-container">
+      <div class="accel-input">
+        <label for="accel_1">1분</label>
+        <input type="number" id="accel_1" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_5">5분</label>
+        <input type="number" id="accel_5" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_15">15분</label>
+        <input type="number" id="accel_15" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_30">30분</label>
+        <input type="number" id="accel_30" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_60">60분</label>
+        <input type="number" id="accel_60" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_4h">4시간</label>
+        <input type="number" id="accel_4h" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_8h">8시간</label>
+        <input type="number" id="accel_8h" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_12h">12시간</label>
+        <input type="number" id="accel_12h" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_15h">15시간</label>
+        <input type="number" id="accel_15h" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_1d">1일</label>
+        <input type="number" id="accel_1d" value="0" min="0">
+      </div>
+      <div class="accel-input">
+        <label for="accel_3d">3일</label>
+        <input type="number" id="accel_3d" value="0" min="0">
+      </div>
+    </div>
+    <div class="accel-buttons">
+      <button class="calculate-btn" onclick="calculateAcceleration()">조회하기</button>
+      <button class="reset-btn" onclick="resetAcceleration()">초기화</button>
+    </div>
+    <p id="accel_result"></p>
+    <button id="accel_score_btn" onclick="calculateAccelScore()">올스타 1일차 임의가속 점수계산</button>
+  </div>
+  
+  <!-- 탭 2: 황금조각 계산기 -->
+  <div id="tab2" class="tab-content">
+    <div class="calculator-container">
+      <h3>황금 조각 계산기</h3>
+      <div class="skill-inputs">
+        <div class="skill-input">
+          <label for="gold_skill1">1번 스킬</label>
+          <input type="number" id="gold_skill1" value="1" min="1" max="6">
+        </div>
+        <div class="skill-input">
+          <label for="gold_skill2">2번 스킬</label>
+          <input type="number" id="gold_skill2" value="1" min="1" max="6">
+        </div>
+        <div class="skill-input">
+          <label for="gold_skill3">3번 스킬</label>
+          <input type="number" id="gold_skill3" value="1" min="1" max="6">
+        </div>
+        <div class="skill-input">
+          <label for="gold_skill4">4번 스킬</label>
+          <input type="number" id="gold_skill4" value="1" min="1" max="6">
+        </div>
+      </div>
+      <div class="buttons">
+        <button class="calculate-btn" onclick="calculateGoldPieces()">조회하기</button>
+        <button class="reset-btn" onclick="resetFields()">초기화</button>
+      </div>
+      <p id="gold_result"></p>
+    </div>
+  </div>
+  
+  <!-- 탭 3: 채팅방 정보 -->
+  <div id="tab3" class="tab-content">
+    <h3>채팅방 정보</h3>
+    <div class="chat-buttons">
+      <a href="https://discord.com/invite/Pn5mSp8X" target="_blank" class="discord-btn">
+        <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png" alt="Discord">
+        디스코드 음성 채팅방
+      </a>
+      <a href="https://open.kakao.com/o/gYSwy1df" target="_blank" class="kakao-btn">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk">
+        카카오톡 수다 채팅방
+      </a>
+      <a href="https://open.kakao.com/o/gyOcvYmf" target="_blank" class="kakao-btn">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk">
+        카카오톡 공지 채팅방
+      </a>
+      <a href="#" target="_blank" class="kakao-btn">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk">
+        카카오톡 임원 채팅방
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 가속계산기 스크립트
+  function calculateAcceleration() {
+    const factors = {
+      accel_1: 1,
+      accel_5: 5,
+      accel_15: 15,
+      accel_30: 30,
+      accel_60: 60,
+      accel_4h: 240,
+      accel_8h: 480,
+      accel_12h: 720,
+      accel_15h: 900,
+      accel_1d: 1440,
+      accel_3d: 4320
+    };
+    
+    let totalMinutes = 0;
+    totalMinutes += (parseInt($('#accel_1').val()) || 0) * factors.accel_1;
+    totalMinutes += (parseInt($('#accel_5').val()) || 0) * factors.accel_5;
+    totalMinutes += (parseInt($('#accel_15').val()) || 0) * factors.accel_15;
+    totalMinutes += (parseInt($('#accel_30').val()) || 0) * factors.accel_30;
+    totalMinutes += (parseInt($('#accel_60').val()) || 0) * factors.accel_60;
+    totalMinutes += (parseInt($('#accel_4h').val()) || 0) * factors.accel_4h;
+    totalMinutes += (parseInt($('#accel_8h').val()) || 0) * factors.accel_8h;
+    totalMinutes += (parseInt($('#accel_12h').val()) || 0) * factors.accel_12h;
+    totalMinutes += (parseInt($('#accel_15h').val()) || 0) * factors.accel_15h;
+    totalMinutes += (parseInt($('#accel_1d').val()) || 0) * factors.accel_1d;
+    totalMinutes += (parseInt($('#accel_3d').val()) || 0) * factors.accel_3d;
+    
+    let days = Math.floor(totalMinutes / 1440);
+    let remainder = totalMinutes % 1440;
+    let hours = Math.floor(remainder / 60);
+    let minutes = remainder % 60;
+    
+    $('#accel_result').html(`총 시간: ${days}일 ${hours}시간 ${minutes}분`);
+    
+    if(totalMinutes > 0){
+      $('#accel_score_btn').show();
+    } else {
+      $('#accel_score_btn').hide();
+    }
+  }
+  
+  function resetAcceleration() {
+    $('#accel_1, #accel_5, #accel_15, #accel_30, #accel_60, #accel_4h, #accel_8h, #accel_12h, #accel_15h, #accel_1d, #accel_3d').val(0);
+    $('#accel_result').html("");
+    $('#accel_score_btn').hide();
+  }
+  
+  function calculateAccelScore() {
+    const factors = {
+      accel_1: 1,
+      accel_5: 5,
+      accel_15: 15,
+      accel_30: 30,
+      accel_60: 60,
+      accel_4h: 240,
+      accel_8h: 480,
+      accel_12h: 720,
+      accel_15h: 900,
+      accel_1d: 1440,
+      accel_3d: 4320
+    };
+    let totalMinutes = 0;
+    totalMinutes += (parseInt($('#accel_1').val()) || 0) * factors.accel_1;
+    totalMinutes += (parseInt($('#accel_5').val()) || 0) * factors.accel_5;
+    totalMinutes += (parseInt($('#accel_15').val()) || 0) * factors.accel_15;
+    totalMinutes += (parseInt($('#accel_30').val()) || 0) * factors.accel_30;
+    totalMinutes += (parseInt($('#accel_60').val()) || 0) * factors.accel_60;
+    totalMinutes += (parseInt($('#accel_4h').val()) || 0) * factors.accel_4h;
+    totalMinutes += (parseInt($('#accel_8h').val()) || 0) * factors.accel_8h;
+    totalMinutes += (parseInt($('#accel_12h').val()) || 0) * factors.accel_12h;
+    totalMinutes += (parseInt($('#accel_15h').val()) || 0) * factors.accel_15h;
+    totalMinutes += (parseInt($('#accel_1d').val()) || 0) * factors.accel_1d;
+    totalMinutes += (parseInt($('#accel_3d').val()) || 0) * factors.accel_3d;
+    
+    let score = totalMinutes * 250;
+    let scoreFormatted = score.toLocaleString();
+    $('#accel_result').append(`<br>임의가속 점수: ${scoreFormatted} point`);
+  }
+  
+  // 황금조각 계산기 스크립트
+  const goldData = {
+    "1111": 680,
+    "1112": 670,
+    "1113": 660,
+    "1114": 645,
+    "1115": 630,
+    "1116": 590,
+    "1122": 660,
+    "1123": 645,
+    "1124": 630,
+    "1125": 605,
+    "1133": 630,
+    "1134": 605,
+    "1135": 575,
+    "1144": 575,
+    "1155": 500,
+    "1222": 660,
+    "1233": 605,
+    "1333": 575,
+    "1344": 500,
+    "1444": 460,
+    "2444": 415,
+    "1555": 310,
+    "2222": 630,
+    "2333": 540,
+    "3333": 500,
+    "1244": 540,
+    "3444": 365,
+    "4444": 310,
+    "1455": 365,
+    "2555": 240,
+    "2355": 365,
+    "2455": 310,
+    "1355": 415,
+    "3455": 240,
+    "4455": 165,
+    "3555": 165,
+    "4555": 85,
+    "5553": 165,
+    "5554": 85,
+    // 새 요청:
+    "5553": 165, // 오름차순 정렬하면 "3555" → 165 (이미 있음)
+    "5554": 85,  // 오름차순 정렬하면 "4555" → 85 (이미 있음)
+    // 새 요청: "5531" → "1355": 415 (이미 있음)
+    // 새 요청: "5534" → "3455": 240 (이미 있음)
+    // 새 요청: "5544" → "4455": 165 (이미 있음)
+    // 새 요청: "5552" → "2555": 240 (이미 있음)
+    // 새 요청: "5553"와 "5554" 처리됨.
+    // 추가 요청:
+    "5553": 165, // 유지
+    "5554": 85,  // 유지
+    // 추가 요청: "5531" 등은 이미 처리.
+    // 새 요청: "5553"와 "5554"는 그대로.
+    // 마지막 새 요청:
+    // "5553"와 "5554" 추가 요청은 반영됨.
+    // 새 요청: "5553"와 "5554" 그대로 유지.
+    // 마지막 요청:
+    // "5553"와 "5554" 처리됨.
+    // 새 요청: "5553"와 "5554"는 이미 처리됨.
+    // 새 요청: "5553"와 "5554" 처리됨.
+    // --- 새로 추가:
+    "5553": 165, // 그대로
+    "5554": 85,  // 그대로
+    // 마지막 새 요청:
+    // "5544" -> "4455": 165는 이미 있음.
+    // 새 요청: "5553"와 "5554"는 그대로 유지.
+    
+    // 새로 추가 요청:
+    // "5553" 데이터 없음 → 처리됨, "5554" 데이터 없음 → 처리됨.
+    
+    // 새 요청: "5553"와 "5554"는 이미 처리.
+    
+    // --- 마지막 새 요청:
+    // "5553"와 "5554" 처리됨.
+    
+    // 최종 추가:
+    "5553": 165,
+    "5554": 85
+  };
+
+  function calculateGoldPieces() {
+    let skills = [
+      parseInt($('#gold_skill1').val()),
+      parseInt($('#gold_skill2').val()),
+      parseInt($('#gold_skill3').val()),
+      parseInt($('#gold_skill4').val())
+    ];
+    skills.sort((a, b) => a - b);
+    let skillKey = skills.join("");
+    let remainingGoldPieces = goldData[skillKey] || "데이터 없음";
+    $("#gold_result").html(`각성까지 필요한 조각 수: <span>${remainingGoldPieces}</span>`);
+  }
+
+  function resetFields() {
+    $('#gold_skill1, #gold_skill2, #gold_skill3, #gold_skill4').val(1);
+    $("#gold_result").html("");
+  }
+</script>
+
+</body>
+</html>
