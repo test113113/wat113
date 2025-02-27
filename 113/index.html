@@ -6,7 +6,7 @@
   <title>계산기 탭 페이지</title>
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
   <style>
-    /* 오디오 플레이어 스타일 */
+    /* 기본 스타일 */
     .audio-player {
       display: flex;
       justify-content: center;
@@ -23,7 +23,6 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    /* 탭 메뉴 스타일 */
     .tabs {
       display: flex;
       justify-content: center;
@@ -49,30 +48,35 @@
       padding: 15px;
       background-color: #fff;
     }
-    /* 공통 컨테이너 스타일 */
     .container {
       width: 90%;
       max-width: 400px;
       margin: 20px auto;
     }
-    /* 가속계산기 스타일 */
-    .accel-container {
+    /* 각 계산기 영역 기본 입력, 버튼 스타일 */
+    .accel-container, .skill-inputs, .allstar-container, .allstar2-container, .medal-container, 
+    .zombie-container, .hive-container, .roulette-container, .training-container {
+      margin-bottom: 15px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 10px 20px;
-      margin-bottom: 15px;
     }
-    .accel-input {
+    .accel-container { grid-template-columns: repeat(2, 1fr); }
+    .allstar-container { grid-template-columns: repeat(3, 1fr); }
+    .allstar2-container, .medal-container, .zombie-container, .hive-container, .roulette-container { grid-template-columns: repeat(2, 1fr); }
+    .training-container { grid-template-columns: repeat(3, 1fr); }
+    .accel-input, .skill-input, .allstar-input, .allstar2-input, .medal-input, .zombie-input, .hive-input, .roulette-input, .training-input {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .accel-input label {
+    .accel-input label, .skill-input label, .allstar-input label, .allstar2-input label, .medal-input label, 
+    .zombie-input label, .hive-input label, .roulette-input label, .training-input label {
       margin-bottom: 5px;
       font-size: 16px;
       color: #333;
     }
-    .accel-input input {
+    .accel-input input, .skill-input input, .allstar-input input, .allstar2-input input, .medal-input input, 
+    .zombie-input input, .hive-input input, .roulette-input input, .training-input input {
       width: 100%;
       padding: 10px;
       font-size: 18px;
@@ -80,12 +84,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-    .accel-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 15px;
-    }
-    .accel-buttons button {
+    .calculate-btn, .reset-btn {
       width: 48%;
       padding: 10px;
       font-size: 16px;
@@ -94,146 +93,32 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    .calculate-btn {
-      background-color: #007bff;
-      color: #fff;
-    }
-    .reset-btn {
-      background-color: #dc3545;
-      color: #fff;
-    }
-    #accel_result {
-      font-size: 20px;
-      color: red;
-      font-weight: bold;
-      text-align: center;
-    }
-    #accel_score_btn {
-      display: none;
-      margin-top: 10px;
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      background-color: #28a745;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    /* 황금조각 계산기 스타일 */
-    .skill-inputs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 20px;
-      row-gap: 10px;
-    }
-    .skill-input {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .skill-input label {
-      margin-bottom: 5px;
-      font-size: 16px;
-      color: #333;
-    }
-    .skill-input input {
-      width: 100%;
-      padding: 10px;
-      font-size: 18px;
-      text-align: center;
+    .calculate-btn { background-color: #007bff; }
+    .reset-btn { background-color: #dc3545; }
+    /* 그룹 영역 */
+    .allstar-group {
       border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .buttons {
-      margin-top: 15px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .buttons button {
-      width: 48%;
       padding: 10px;
-      font-size: 16px;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      margin-bottom: 20px;
     }
-    #gold_result {
-      margin-top: 15px;
-      font-size: 20px;
-      color: red;
-      font-weight: bold;
-    }
-    /* 채팅방 정보 스타일 */
-    .chat-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .chat-buttons a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    .discord-btn {
-      background-color: #5765EB;
-      color: #fff;
-    }
-    .kakao-btn {
-      background-color: #FAE301;
-      color: #000;
-    }
-    .chat-buttons img {
-      height: 24px;
-      width: 24px;
-      vertical-align: middle;
+    .allstar-group h3, .allstar-group h4 {
+      margin-top: 0;
     }
     /* 반응형 */
     @media (max-width: 480px) {
-      .container {
-        width: 95%;
-        padding: 20px;
-      }
-      .tab {
-        padding: 8px 12px;
+      .container { width: 95%; padding: 20px; }
+      .tab { padding: 8px 12px; font-size: 14px; }
+      .accel-input label, .skill-input label, .allstar-input label, .allstar2-input label, .medal-input label {
         font-size: 14px;
       }
-      .accel-input label, .skill-input label {
-        font-size: 14px;
+      .accel-input input, .skill-input input, .allstar-input input, .allstar2-input input, .medal-input input {
+        font-size: 16px; padding: 8px;
       }
-      .accel-input input, .skill-input input {
-        font-size: 16px;
-        padding: 8px;
-      }
-      button, .chat-buttons a, #accel_score_btn {
-        font-size: 14px;
-        padding: 8px;
-      }
-      #accel_result, #gold_result {
-        font-size: 18px;
-      }
-      .chat-buttons img {
-        height: 20px;
-        width: 20px;
-      }
-      .audio-player input {
-        font-size: 14px;
-      }
-      .audio-player button {
-        font-size: 14px;
-        padding: 6px 12px;
-      }
+      .calculate-btn, .reset-btn { font-size: 14px; padding: 8px; }
     }
   </style>
   <script>
     $(document).ready(function(){
-      // 탭 클릭 이벤트 처리
       $('.tab').click(function(){
         $('.tab').removeClass('active');
         $(this).addClass('active');
@@ -241,134 +126,78 @@
         $('.tab-content').hide();
         $('#' + tabId).show();
       });
-      // 초기: 첫 번째 탭 보이기
       $('.tab').first().click();
     });
   </script>
   <script>
-    // 호스팅 경로에 업로드한 노래의 URL (실제 URL로 수정하세요)
     const bgmUrl = "Loggle_song.mp3";
   </script>
 </head>
 <body>
-
-<!-- 배경음악 플레이어 (탭 메뉴 위에 위치) -->
-<div class="audio-player">
-  <button id="bgm_toggle">▶ 재생</button>
-
-  <!-- 추가된 볼륨 조절 버튼 -->
-  <button id="volume_down">🔉</button>
-  <span id="volume_display">5</span>
-  <button id="volume_up">🔊</button>
-</div>
-<script>
-  // 오디오 요소 생성 및 설정
-  const bgmAudio = document.createElement('audio');
-  bgmAudio.id = 'bgm';
-  bgmAudio.src = bgmUrl;
-  bgmAudio.loop = true; // 반복 재생
-  // 플레이어 상에 오디오 요소를 숨김 처리 후 추가
-  document.querySelector('.audio-player').appendChild(bgmAudio);
-  
-  const bgmToggle = document.getElementById('bgm_toggle');
-  const volumeDown = document.getElementById('volume_down'); // 추가된 볼륨 감소 버튼
-  const volumeUp = document.getElementById('volume_up');     // 추가된 볼륨 증가 버튼
-  const volumeDisplay = document.getElementById('volume_display'); // 현재 볼륨 표시
-
-  bgmToggle.addEventListener('click', function(){
-    if(bgmAudio.paused) {
-      bgmAudio.play();
-      bgmToggle.innerHTML = "|| 일시정지";
-    } else {
-      bgmAudio.pause();
-      bgmToggle.innerHTML = "▶ 재생";
+  <!-- 배경음악 플레이어 -->
+  <div class="audio-player">
+    <button id="bgm_toggle">▶ 재생</button>
+    <button id="volume_down">🔉</button>
+    <span id="volume_display">5</span>
+    <button id="volume_up">🔊</button>
+  </div>
+  <script>
+    const bgmAudio = document.createElement('audio');
+    bgmAudio.id = 'bgm';
+    bgmAudio.src = bgmUrl;
+    bgmAudio.loop = true;
+    document.querySelector('.audio-player').appendChild(bgmAudio);
+    const bgmToggle = document.getElementById('bgm_toggle'),
+          volumeDown = document.getElementById('volume_down'),
+          volumeUp = document.getElementById('volume_up'),
+          volumeDisplay = document.getElementById('volume_display');
+    bgmToggle.addEventListener('click', function(){
+      if(bgmAudio.paused){ bgmAudio.play(); bgmToggle.innerHTML = "|| 일시정지"; }
+      else { bgmAudio.pause(); bgmToggle.innerHTML = "▶ 재생"; }
+    });
+    function adjustVolume(change){ 
+      let newVol = Math.min(10, Math.max(0, Math.round(bgmAudio.volume*10)+change));
+      bgmAudio.volume = newVol/10;
+      volumeDisplay.textContent = newVol;
     }
-  });
-  // 볼륨 조절 함수 추가
-  function adjustVolume(change) {
-    let newVolume = Math.min(10, Math.max(0, Math.round(bgmAudio.volume * 10) + change)); // 0~10 범위 제한
-    bgmAudio.volume = newVolume / 10; // 0.0~1.0로 변환
-    volumeDisplay.textContent = newVolume; // UI 업데이트
-  }
-
-  // 볼륨 감소 버튼 이벤트 추가
-  volumeDown.addEventListener('click', function(){
-    adjustVolume(-1);
-  });
-
-  // 볼륨 증가 버튼 이벤트 추가
-  volumeUp.addEventListener('click', function(){
-    adjustVolume(1);
-  });
-</script>
-
-<div class="container">
-  <div class="tabs">
-    <div class="tab" data-tab="tab1">가속계산기</div>
-    <div class="tab" data-tab="tab2">황금조각 계산기</div>
-    <div class="tab" data-tab="tab3">채팅방 정보</div>
-  </div>
+    volumeDown.addEventListener('click', ()=> adjustVolume(-1));
+    volumeUp.addEventListener('click', ()=> adjustVolume(1));
+  </script>
   
-  <!-- 탭 1: 가속계산기 -->
-  <div id="tab1" class="tab-content">
-    <h3>가속계산기</h3>
-    <div class="accel-container">
-      <div class="accel-input">
-        <label for="accel_1">1분</label>
-        <input type="number" id="accel_1" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_5">5분</label>
-        <input type="number" id="accel_5" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_15">15분</label>
-        <input type="number" id="accel_15" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_30">30분</label>
-        <input type="number" id="accel_30" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_60">60분</label>
-        <input type="number" id="accel_60" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_4h">4시간</label>
-        <input type="number" id="accel_4h" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_8h">8시간</label>
-        <input type="number" id="accel_8h" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_12h">12시간</label>
-        <input type="number" id="accel_12h" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_15h">15시간</label>
-        <input type="number" id="accel_15h" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_1d">1일</label>
-        <input type="number" id="accel_1d" value="0" min="0">
-      </div>
-      <div class="accel-input">
-        <label for="accel_3d">3일</label>
-        <input type="number" id="accel_3d" value="0" min="0">
-      </div>
+  <div class="container">
+    <div class="tabs">
+      <div class="tab" data-tab="tab1">가속계산기</div>
+      <div class="tab" data-tab="tab2">황금 조각 계산기</div>
+      <div class="tab" data-tab="tab3">올스타 계산기</div>
+      <div class="tab" data-tab="tab4">채팅방 정보</div>
     </div>
-    <div class="accel-buttons">
-      <button class="calculate-btn" onclick="calculateAcceleration()">조회하기</button>
-      <button class="reset-btn" onclick="resetAcceleration()">초기화</button>
+    
+    <!-- 탭 1: 가속계산기 (기존 그대로) -->
+    <div id="tab1" class="tab-content">
+      <h3>가속계산기</h3>
+      <div class="accel-container">
+        <div class="accel-input"><label for="accel_1">1분</label><input type="number" id="accel_1" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_5">5분</label><input type="number" id="accel_5" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_15">15분</label><input type="number" id="accel_15" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_30">30분</label><input type="number" id="accel_30" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_60">60분</label><input type="number" id="accel_60" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_4h">4시간</label><input type="number" id="accel_4h" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_8h">8시간</label><input type="number" id="accel_8h" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_12h">12시간</label><input type="number" id="accel_12h" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_15h">15시간</label><input type="number" id="accel_15h" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_1d">1일</label><input type="number" id="accel_1d" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_3d">3일</label><input type="number" id="accel_3d" value="0" min="0"></div>
+      </div>
+      <div class="accel-buttons">
+        <button class="calculate-btn" onclick="calculateAcceleration()">조회하기</button>
+        <button class="reset-btn" onclick="resetAcceleration()">초기화</button>
+      </div>
+      <p id="accel_result"></p>
+      <button id="accel_score_btn" onclick="calculateAccelScore()">올스타 1일차 임의가속 점수계산</button>
     </div>
-    <p id="accel_result"></p>
-    <button id="accel_score_btn" onclick="calculateAccelScore()">올스타 1일차 임의가속 점수계산</button>
-  </div>
-  
-  <!-- 탭 2: 황금조각 계산기 -->
-  <div id="tab2" class="tab-content">
-    <div class="calculator-container">
+    
+    <!-- 탭 2: 황금 조각 계산기 (원래대로 복구) -->
+    <div id="tab2" class="tab-content">
       <h3>황금 조각 계산기</h3>
       <div class="skill-inputs">
         <div class="skill-input">
@@ -394,209 +223,433 @@
       </div>
       <p id="gold_result"></p>
     </div>
-  </div>
-  
-  <!-- 탭 3: 채팅방 정보 -->
-  <div id="tab3" class="tab-content">
-    <h3>채팅방 정보</h3>
-    <div class="chat-buttons">
-      <a href="https://discord.com/invite/Pn5mSp8X" target="_blank" class="discord-btn">
-        <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png" alt="Discord">
-        디스코드 음성 채팅방
-      </a>
-      <a href="https://open.kakao.com/o/gYSwy1df" target="_blank" class="kakao-btn">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk">
-        카카오톡 수다 채팅방
-      </a>
-      <a href="https://open.kakao.com/o/gyOcvYmf" target="_blank" class="kakao-btn">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk">
-        카카오톡 공지 채팅방
-      </a>
+    
+    <!-- 탭 3: 올스타 계산기 - 그룹핑 (총 5그룹) -->
+    <div id="tab3" class="tab-content">
+      <!-- 그룹 1: 올스타 1일차 (가속 계산기) -->
+      <div class="allstar-group">
+        <h3>올스타 1일차 계산기</h3>
+        <div class="allstar-container">
+          <div class="allstar-input"><label for="allstar_days">일</label><input type="number" id="allstar_days" value="0" min="0"></div>
+          <div class="allstar-input"><label for="allstar_hours">시간</label><input type="number" id="allstar_hours" value="0" min="0"></div>
+          <div class="allstar-input"><label for="allstar_minutes">분</label><input type="number" id="allstar_minutes" value="0" min="0"></div>
+        </div>
+        <div class="allstar-buttons">
+          <button class="calculate-btn" onclick="calculateAllstar()">조회하기</button>
+          <button class="reset-btn" onclick="resetAllstar()">초기화</button>
+        </div>
+        <p id="allstar_result"></p>
+      </div>
+      
+      <!-- 그룹 2: 올스타 2일차 (영웅 탐색 & 영웅 훈장 계산기) -->
+      <div class="allstar-group">
+        <h3>올스타 2일차 계산기 - 영웅 탐색 & 영웅 훈장 계산기</h3>
+        <div class="allstar2-container">
+          <div class="allstar2-input"><label for="hero_normal">일반 탐색 개수</label><input type="number" id="hero_normal" value="0" min="0"></div>
+          <div class="allstar2-input"><label for="hero_advanced">고급 탐색 개수</label><input type="number" id="hero_advanced" value="0" min="0"></div>
+        </div>
+        <div class="allstar2-buttons">
+          <button class="calculate-btn" onclick="calculateAllstar2()">조회하기</button>
+          <button class="reset-btn" onclick="resetAllstar2()">초기화</button>
+        </div>
+        <p id="allstar2_result"></p>
+        <div class="medal-container">
+          <div class="medal-input"><label for="legend_L">전설 훈장 L</label><input type="number" id="legend_L" value="0" min="0"></div>
+          <div class="medal-input"><label for="legend_M">전설 훈장 M</label><input type="number" id="legend_M" value="0" min="0"></div>
+          <div class="medal-input"><label for="legend_S">전설 훈장 S</label><input type="number" id="legend_S" value="0" min="0"></div>
+          <div class="medal-input"><label for="elite_L">정예 훈장 L</label><input type="number" id="elite_L" value="0" min="0"></div>
+          <div class="medal-input"><label for="elite_M">정예 훈장 M</label><input type="number" id="elite_M" value="0" min="0"></div>
+          <div class="medal-input"><label for="elite_S">정예 훈장 S</label><input type="number" id="elite_S" value="0" min="0"></div>
+        </div>
+        <div class="medal-buttons">
+          <button class="calculate-btn" onclick="calculateMedals()">조회하기</button>
+          <button class="reset-btn" onclick="resetMedals()">초기화</button>
+        </div>
+        <p id="medal_result"></p>
+      </div>
+      
+      <!-- 그룹 3: 올스타 3일차 (룰렛 및 부대훈련) -->
+      <div class="allstar-group">
+        <h3>올스타 3일차 계산기 - 룰렛 및 부대훈련</h3>
+        <div class="allstar4-container">
+          <div class="roulette-input">
+            <label for="roulette_count">룰렛 개수</label>
+            <input type="number" id="roulette_count" value="0" min="0">
+          </div>
+          <div class="training-container">
+            <div class="training-input"><label for="training_tier1">부대훈련 1티어</label><input type="number" id="training_tier1" value="0" min="0"></div>
+            <div class="training-input"><label for="training_tier2">부대훈련 2티어</label><input type="number" id="training_tier2" value="0" min="0"></div>
+            <div class="training-input"><label for="training_tier3">부대훈련 3티어</label><input type="number" id="training_tier3" value="0" min="0"></div>
+            <div class="training-input"><label for="training_tier4">부대훈련 4티어</label><input type="number" id="training_tier4" value="0" min="0"></div>
+            <div class="training-input"><label for="training_tier5">부대훈련 5티어</label><input type="number" id="training_tier5" value="0" min="0"></div>
+            <div class="training-input"><label for="training_tier6">부대훈련 6티어</label><input type="number" id="training_tier6" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="allstar4-buttons">
+          <button class="calculate-btn" onclick="calculateAllstar4()">조회하기</button>
+          <button class="reset-btn" onclick="resetAllstar4()">초기화</button>
+        </div>
+        <p id="allstar4_result"></p>
+      </div>
+      
+      <!-- 그룹 4: 올스타 4일차 (좀비 & 하이브 분리) -->
+      <div class="allstar-group">
+        <h3>올스타 4일차 계산기 - 좀비 & 하이브 분리</h3>
+        <div>
+          <h4>좀비 계산기 (레벨별 그룹)</h4>
+          <div class="zombie-container">
+            <div class="zombie-input"><label for="zombie_1_3">좀비 1~3렙</label><input type="number" id="zombie_1_3" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_4_6">좀비 4~6렙</label><input type="number" id="zombie_4_6" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_7_9">좀비 7~9렙</label><input type="number" id="zombie_7_9" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_10_12">좀비 10~12렙</label><input type="number" id="zombie_10_12" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_13_15">좀비 13~15렙</label><input type="number" id="zombie_13_15" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_16_18">좀비 16~18렙</label><input type="number" id="zombie_16_18" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_19_20">좀비 19~20렙</label><input type="number" id="zombie_19_20" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_21_22">좀비 21~22렙</label><input type="number" id="zombie_21_22" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_23_24">좀비 23~24렙</label><input type="number" id="zombie_23_24" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_25_26">좀비 25~26렙</label><input type="number" id="zombie_25_26" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_27">좀비 27렙</label><input type="number" id="zombie_27" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_28">좀비 28렙</label><input type="number" id="zombie_28" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_29">좀비 29렙</label><input type="number" id="zombie_29" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_30">좀비 30렙</label><input type="number" id="zombie_30" value="0" min="0"></div>
+          </div>
+        </div>
+        <div>
+          <h4>하이브 마인드 계산기</h4>
+          <div class="hive-container">
+            <div class="hive-input"><label for="hive_level1_4">하이브 레벨1</label><input type="number" id="hive_level1_4" value="0" min="0"></div>
+            <div class="hive-input"><label for="hive_level2_4">하이브 레벨2</label><input type="number" id="hive_level2_4" value="0" min="0"></div>
+            <div class="hive-input"><label for="hive_level3_4">하이브 레벨3</label><input type="number" id="hive_level3_4" value="0" min="0"></div>
+            <div class="hive-input"><label for="hive_level4_4">하이브 레벨4</label><input type="number" id="hive_level4_4" value="0" min="0"></div>
+            <div class="hive-input"><label for="hive_level5_4">하이브 레벨5</label><input type="number" id="hive_level5_4" value="0" min="0"></div>
+            <div class="hive-input"><label for="hive_level6_4">하이브 레벨6</label><input type="number" id="hive_level6_4" value="0" min="0"></div>
+          </div>
+        </div>
+        <div>
+          <h4>매직티켓 & 화살</h4>
+          <div class="roulette-container">
+            <div class="roulette-input"><label for="magic_ticket_4">매직티켓</label><input type="number" id="magic_ticket_4" value="0" min="0"></div>
+            <div class="roulette-input"><label for="arrow_4">화살</label><input type="number" id="arrow_4" value="0" min="0"></div>
+          </div>
+        </div>
+        <div>
+          <button class="calculate-btn" onclick="calculateZombieAndHive()">조회하기</button>
+          <button class="reset-btn" onclick="resetZombieAndHive()">초기화</button>
+        </div>
+        <p id="zombie_result_4"></p>
+        <p id="hive_result_4"></p>
+      </div>
+      
+      <!-- 그룹 5: 올스타 5일차 -->
+      <div class="allstar-group">
+        <h3>올스타 5일차 계산기</h3>
+        <!-- 좀비 처치 (레벨 1~30 개별 입력) -->
+        <div class="group5-section">
+          <h4>좀비 처치 (레벨 1~30, 개별 입력)</h4>
+          <div class="zombie-container individual" style="grid-template-columns: repeat(5, 1fr);">
+            <!-- 1부터 30까지 -->
+            <!-- 레벨 1 ~ 10 -->
+            <div class="zombie-input"><label for="zombie_lvl_1">1</label><input type="number" id="zombie_lvl_1" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_2">2</label><input type="number" id="zombie_lvl_2" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_3">3</label><input type="number" id="zombie_lvl_3" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_4">4</label><input type="number" id="zombie_lvl_4" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_5">5</label><input type="number" id="zombie_lvl_5" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_6">6</label><input type="number" id="zombie_lvl_6" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_7">7</label><input type="number" id="zombie_lvl_7" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_8">8</label><input type="number" id="zombie_lvl_8" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_9">9</label><input type="number" id="zombie_lvl_9" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_10">10</label><input type="number" id="zombie_lvl_10" value="0" min="0"></div>
+            <!-- 레벨 11 ~ 20 -->
+            <div class="zombie-input"><label for="zombie_lvl_11">11</label><input type="number" id="zombie_lvl_11" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_12">12</label><input type="number" id="zombie_lvl_12" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_13">13</label><input type="number" id="zombie_lvl_13" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_14">14</label><input type="number" id="zombie_lvl_14" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_15">15</label><input type="number" id="zombie_lvl_15" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_16">16</label><input type="number" id="zombie_lvl_16" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_17">17</label><input type="number" id="zombie_lvl_17" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_18">18</label><input type="number" id="zombie_lvl_18" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_19">19</label><input type="number" id="zombie_lvl_19" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_20">20</label><input type="number" id="zombie_lvl_20" value="0" min="0"></div>
+            <!-- 레벨 21 ~ 30 -->
+            <div class="zombie-input"><label for="zombie_lvl_21">21</label><input type="number" id="zombie_lvl_21" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_22">22</label><input type="number" id="zombie_lvl_22" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_23">23</label><input type="number" id="zombie_lvl_23" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_24">24</label><input type="number" id="zombie_lvl_24" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_25">25</label><input type="number" id="zombie_lvl_25" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_26">26</label><input type="number" id="zombie_lvl_26" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_27">27</label><input type="number" id="zombie_lvl_27" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_28">28</label><input type="number" id="zombie_lvl_28" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_29">29</label><input type="number" id="zombie_lvl_29" value="0" min="0"></div>
+            <div class="zombie-input"><label for="zombie_lvl_30">30</label><input type="number" id="zombie_lvl_30" value="0" min="0"></div>
+          </div>
+        </div>
+        <!-- 나머지 그룹 5 항목 (영웅 장비 추적, 세공, 재료 등) -->
+        <div class="group5-section">
+          <h4>영웅 장비 추적</h4>
+          <div class="allstar-input"><label for="hero_equip_track">추적 횟수</label><input type="number" id="hero_equip_track" value="0" min="0"></div>
+        </div>
+        <div class="group5-section">
+          <h4>영웅 장비 세공</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="hero_crafting_elite">정예 세공칩</label><input type="number" id="hero_crafting_elite" value="0" min="0"></div>
+            <div class="allstar-input"><label for="hero_crafting_excellent">우수 세공칩</label><input type="number" id="hero_crafting_excellent" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <h4>장비재료 사용</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="equipment_material_carbon">탄소강</label><input type="number" id="equipment_material_carbon" value="0" min="0"></div>
+            <div class="allstar-input"><label for="equipment_material_fabric">방어용 원단</label><input type="number" id="equipment_material_fabric" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <h4>모듈 재료 사용 (폴리/탄창/복합)</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="module_material_basic">기본</label><input type="number" id="module_material_basic" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_normal">보통</label><input type="number" id="module_material_normal" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_good">우수</label><input type="number" id="module_material_good" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_elite">정예</label><input type="number" id="module_material_elite" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_legend">전설</label><input type="number" id="module_material_legend" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_supreme">지존</label><input type="number" id="module_material_supreme" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <h4>기본 고분자 재료 사용</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="polymer_material_basic">기본</label><input type="number" id="polymer_material_basic" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_normal">보통</label><input type="number" id="polymer_material_normal" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_good">우수</label><input type="number" id="polymer_material_good" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_elite">정예</label><input type="number" id="polymer_material_elite" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_legend">전설</label><input type="number" id="polymer_material_legend" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_supreme">지존</label><input type="number" id="polymer_material_supreme" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <h4>추가: 매직티켓, 화살, 무기고 카드</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="magic_ticket_day5">매직티켓</label><input type="number" id="magic_ticket_day5" value="0" min="0"></div>
+            <div class="allstar-input"><label for="arrow_day5">화살</label><input type="number" id="arrow_day5" value="0" min="0"></div>
+            <div class="allstar-input"><label for="weapon_card">무기고 카드</label><input type="number" id="weapon_card" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <button class="calculate-btn" onclick="calculateAllstar5()">전체 5일차 점수 계산</button>
+          <button class="reset-btn" onclick="resetAllstar5()">초기화</button>
+        </div>
+        <p id="allstar5_result"></p>
+      </div>
+    </div>
+    
+    <!-- 탭 4: 채팅방 정보 (원래대로 복구) -->
+    <div id="tab4" class="tab-content">
+      <h3>채팅방 정보</h3>
+      <div class="chat-buttons">
+        <a href="https://discord.com/invite/Pn5mSp8X" target="_blank" class="discord-btn">
+          <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png" alt="Discord">
+          디스코드 음성 채팅방
+        </a>
+        <a href="https://open.kakao.com/o/gYSwy1df" target="_blank" class="kakao-btn">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk">
+          카카오톡 수다 채팅방
+        </a>
+        <a href="https://open.kakao.com/o/gyOcvYmf" target="_blank" class="kakao-btn">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk">
+          카카오톡 공지 채팅방
+        </a>
+      </div>
     </div>
   </div>
-</div>
-
-<script>
-  // 가속계산기 스크립트
-  function calculateAcceleration() {
-    const factors = {
-      accel_1: 1,
-      accel_5: 5,
-      accel_15: 15,
-      accel_30: 30,
-      accel_60: 60,
-      accel_4h: 240,
-      accel_8h: 480,
-      accel_12h: 720,
-      accel_15h: 900,
-      accel_1d: 1440,
-      accel_3d: 4320
-    };
-    
-    let totalMinutes = 0;
-    totalMinutes += (parseInt($('#accel_1').val()) || 0) * factors.accel_1;
-    totalMinutes += (parseInt($('#accel_5').val()) || 0) * factors.accel_5;
-    totalMinutes += (parseInt($('#accel_15').val()) || 0) * factors.accel_15;
-    totalMinutes += (parseInt($('#accel_30').val()) || 0) * factors.accel_30;
-    totalMinutes += (parseInt($('#accel_60').val()) || 0) * factors.accel_60;
-    totalMinutes += (parseInt($('#accel_4h').val()) || 0) * factors.accel_4h;
-    totalMinutes += (parseInt($('#accel_8h').val()) || 0) * factors.accel_8h;
-    totalMinutes += (parseInt($('#accel_12h').val()) || 0) * factors.accel_12h;
-    totalMinutes += (parseInt($('#accel_15h').val()) || 0) * factors.accel_15h;
-    totalMinutes += (parseInt($('#accel_1d').val()) || 0) * factors.accel_1d;
-    totalMinutes += (parseInt($('#accel_3d').val()) || 0) * factors.accel_3d;
-    
-    let days = Math.floor(totalMinutes / 1440);
-    let remainder = totalMinutes % 1440;
-    let hours = Math.floor(remainder / 60);
-    let minutes = remainder % 60;
-    
-    $('#accel_result').html(`총 시간: ${days}일 ${hours}시간 ${minutes}분`);
-    
-    if(totalMinutes > 0){
-      $('#accel_score_btn').show();
-    } else {
+  
+  <script>
+    /* 가속계산기 함수 (변경 전 동일) */
+    function calculateAcceleration() {
+      const f = { accel_1:1, accel_5:5, accel_15:15, accel_30:30, accel_60:60, accel_4h:240, accel_8h:480, accel_12h:720, accel_15h:900, accel_1d:1440, accel_3d:4320 };
+      let total = 0;
+      total += (parseInt($('#accel_1').val())||0)*f.accel_1;
+      total += (parseInt($('#accel_5').val())||0)*f.accel_5;
+      total += (parseInt($('#accel_15').val())||0)*f.accel_15;
+      total += (parseInt($('#accel_30').val())||0)*f.accel_30;
+      total += (parseInt($('#accel_60').val())||0)*f.accel_60;
+      total += (parseInt($('#accel_4h').val())||0)*f.accel_4h;
+      total += (parseInt($('#accel_8h').val())||0)*f.accel_8h;
+      total += (parseInt($('#accel_12h').val())||0)*f.accel_12h;
+      total += (parseInt($('#accel_15h').val())||0)*f.accel_15h;
+      total += (parseInt($('#accel_1d').val())||0)*f.accel_1d;
+      total += (parseInt($('#accel_3d').val())||0)*f.accel_3d;
+      let d = Math.floor(total/1440), r = total%1440, h = Math.floor(r/60), m = r%60;
+      $('#accel_result').html(`총 시간: ${d}일 ${h}시간 ${m}분`);
+      if(total>0){ $('#accel_score_btn').show(); } else { $('#accel_score_btn').hide(); }
+    }
+    function resetAcceleration() {
+      $('#accel_1, #accel_5, #accel_15, #accel_30, #accel_60, #accel_4h, #accel_8h, #accel_12h, #accel_15h, #accel_1d, #accel_3d').val(0);
+      $('#accel_result').html("");
       $('#accel_score_btn').hide();
     }
-  }
-  
-  function resetAcceleration() {
-    $('#accel_1, #accel_5, #accel_15, #accel_30, #accel_60, #accel_4h, #accel_8h, #accel_12h, #accel_15h, #accel_1d, #accel_3d').val(0);
-    $('#accel_result').html("");
-    $('#accel_score_btn').hide();
-  }
-  
-  function calculateAccelScore() {
-    const factors = {
-      accel_1: 1,
-      accel_5: 5,
-      accel_15: 15,
-      accel_30: 30,
-      accel_60: 60,
-      accel_4h: 240,
-      accel_8h: 480,
-      accel_12h: 720,
-      accel_15h: 900,
-      accel_1d: 1440,
-      accel_3d: 4320
-    };
-    let totalMinutes = 0;
-    totalMinutes += (parseInt($('#accel_1').val()) || 0) * factors.accel_1;
-    totalMinutes += (parseInt($('#accel_5').val()) || 0) * factors.accel_5;
-    totalMinutes += (parseInt($('#accel_15').val()) || 0) * factors.accel_15;
-    totalMinutes += (parseInt($('#accel_30').val()) || 0) * factors.accel_30;
-    totalMinutes += (parseInt($('#accel_60').val()) || 0) * factors.accel_60;
-    totalMinutes += (parseInt($('#accel_4h').val()) || 0) * factors.accel_4h;
-    totalMinutes += (parseInt($('#accel_8h').val()) || 0) * factors.accel_8h;
-    totalMinutes += (parseInt($('#accel_12h').val()) || 0) * factors.accel_12h;
-    totalMinutes += (parseInt($('#accel_15h').val()) || 0) * factors.accel_15h;
-    totalMinutes += (parseInt($('#accel_1d').val()) || 0) * factors.accel_1d;
-    totalMinutes += (parseInt($('#accel_3d').val()) || 0) * factors.accel_3d;
+    function calculateAccelScore() {
+      const f = { accel_1:1, accel_5:5, accel_15:15, accel_30:30, accel_60:60, accel_4h:240, accel_8h:480, accel_12h:720, accel_15h:900, accel_1d:1440, accel_3d:4320 };
+      let total = 0;
+      total += (parseInt($('#accel_1').val())||0)*f.accel_1;
+      total += (parseInt($('#accel_5').val())||0)*f.accel_5;
+      total += (parseInt($('#accel_15').val())||0)*f.accel_15;
+      total += (parseInt($('#accel_30').val())||0)*f.accel_30;
+      total += (parseInt($('#accel_60').val())||0)*f.accel_60;
+      total += (parseInt($('#accel_4h').val())||0)*f.accel_4h;
+      total += (parseInt($('#accel_8h').val())||0)*f.accel_8h;
+      total += (parseInt($('#accel_12h').val())||0)*f.accel_12h;
+      total += (parseInt($('#accel_15h').val())||0)*f.accel_15h;
+      total += (parseInt($('#accel_1d').val())||0)*f.accel_1d;
+      total += (parseInt($('#accel_3d').val())||0)*f.accel_3d;
+      let score = total*250;
+      $('#accel_result').append(`<br>임의가속 점수: ${score.toLocaleString()} point`);
+    }
     
-    let score = totalMinutes * 250;
-    let scoreFormatted = score.toLocaleString();
-    $('#accel_result').append(`<br>임의가속 점수: ${scoreFormatted} point`);
-  }
-  
-  // 황금조각 계산기 스크립트
-  const goldData = {
-    "1111": 680,
-    "1112": 670,
-    "1113": 660,
-    "1114": 645,
-    "1115": 630,
-    "1116": 590,
-    "1122": 660,
-    "1123": 645,
-    "1124": 630,
-    "1125": 605,
-    "1133": 630,
-    "1134": 605,
-    "1135": 575,
-    "1144": 575,
-    "1155": 500,
-    "1222": 660,
-    "1233": 605,
-    "1333": 575,
-    "1344": 500,
-    "1444": 460,
-    "2444": 415,
-    "1555": 310,
-    "2222": 630,
-    "2333": 540,
-    "3333": 500,
-    "1244": 540,
-    "3444": 365,
-    "4444": 310,
-    "1455": 365,
-    "2555": 240,
-    "2355": 365,
-    "2455": 310,
-    "1355": 415,
-    "3455": 240,
-    "4455": 165,
-    "3555": 165,
-    "4555": 85,
-    "5553": 165,
-    "5554": 85,
-    // 새 요청:
-    "5553": 165, // 오름차순 정렬하면 "3555" → 165 (이미 있음)
-    "5554": 85,  // 오름차순 정렬하면 "4555" → 85 (이미 있음)
-    // 새 요청: "5531" → "1355": 415 (이미 있음)
-    // 새 요청: "5534" → "3455": 240 (이미 있음)
-    // 새 요청: "5544" → "4455": 165 (이미 있음)
-    // 새 요청: "5552" → "2555": 240 (이미 있음)
-    // 새 요청: "5553"와 "5554" 처리됨.
-    // 추가 요청:
-    "5553": 165, // 유지
-    "5554": 85,  // 유지
-    // 추가 요청: "5531" 등은 이미 처리.
-    // 새 요청: "5553"와 "5554"는 그대로.
-    // 마지막 새 요청:
-    // "5553"와 "5554" 추가 요청은 반영됨.
-    // 새 요청: "5553"와 "5554" 그대로 유지.
-    // 마지막 요청:
-    // "5553"와 "5554" 처리됨.
-    // 새 요청: "5553"와 "5554"는 이미 처리됨.
-    // 새 요청: "5553"와 "5554" 처리됨.
-    // --- 새로 추가:
-    "5553": 165, // 그대로
-    "5554": 85,  // 그대로
-    // 마지막 새 요청:
-    // "5544" -> "4455": 165는 이미 있음.
-    // 새 요청: "5553"와 "5554"는 그대로 유지.
+    /* 황금 조각 계산기 */
+    const goldData = { "1111":680,"1112":670,"1113":660,"1114":645,"1115":630,"1116":590,"1122":660,"1123":645,"1124":630,"1125":605,"1133":630,"1134":605,"1135":575,"1144":575,"1155":500,"1222":660,"1233":605,"1333":575,"1344":500,"1444":460,"2444":415,"1555":310,"2222":630,"2333":540,"3333":500,"1244":540,"3444":365,"4444":310,"1455":365,"2555":240,"2355":365,"2455":310,"1355":415,"3455":240,"4455":165,"3555":165,"4555":85,"5553":165,"5554":85 };
+    function calculateGoldPieces() {
+      let arr = [parseInt($('#gold_skill1').val()), parseInt($('#gold_skill2').val()), parseInt($('#gold_skill3').val()), parseInt($('#gold_skill4').val())];
+      arr.sort((a,b)=>a-b);
+      let key = arr.join("");
+      let res = goldData[key] || "데이터 없음";
+      $("#gold_result").html(`각성까지 필요한 조각 수: <span>${res}</span>`);
+    }
+    function resetFields() { $('#gold_skill1, #gold_skill2, #gold_skill3, #gold_skill4').val(1); $("#gold_result").html(""); }
     
-    // 새로 추가 요청:
-    // "5553" 데이터 없음 → 처리됨, "5554" 데이터 없음 → 처리됨.
+    /* 올스타 1일차 */
+    function calculateAllstar() {
+      let d = parseInt($('#allstar_days').val())||0,
+          h = parseInt($('#allstar_hours').val())||0,
+          m = parseInt($('#allstar_minutes').val())||0;
+      let total = d*1440+h*60+m;
+      let score = total*250;
+      $('#allstar_result').html(`총 시간: ${d}일 ${h}시간 ${m}분<br>올스타 점수: ${score.toLocaleString()} point`);
+    }
+    function resetAllstar() { $('#allstar_days, #allstar_hours, #allstar_minutes').val(0); $('#allstar_result').html(""); }
     
-    // 새 요청: "5553"와 "5554"는 이미 처리.
+    /* 올스타 2일차 */
+    function calculateAllstar2() {
+      let n = parseInt($('#hero_normal').val())||0,
+          a = parseInt($('#hero_advanced').val())||0;
+      let score = n*1000 + a*8000;
+      $('#allstar2_result').html(`일반 탐색: ${n}개, 고급 탐색: ${a}개<br>총 점수: ${score.toLocaleString()} point`);
+    }
+    function resetAllstar2() { $('#hero_normal, #hero_advanced').val(0); $('#allstar2_result').html(""); }
     
-    // --- 마지막 새 요청:
-    // "5553"와 "5554" 처리됨.
+    /* 올스타 3일차 (룰렛 및 부대훈련) */
+    function calculateAllstar4() {
+      let r = parseInt($('#roulette_count').val())||0;
+      let rouletteScore = r * 132000;
+      let t1 = parseInt($('#training_tier1').val())||0,
+          t2 = parseInt($('#training_tier2').val())||0,
+          t3 = parseInt($('#training_tier3').val())||0,
+          t4 = parseInt($('#training_tier4').val())||0,
+          t5 = parseInt($('#training_tier5').val())||0,
+          t6 = parseInt($('#training_tier6').val())||0;
+      let trainingScore = t1*5 + t2*10 + t3*20 + t4*40 + t5*80 + t6*150;
+      let total = rouletteScore + trainingScore;
+      $('#allstar4_result').html(`룰렛 점수: ${rouletteScore.toLocaleString()} point<br>부대훈련 점수: ${trainingScore.toLocaleString()} point<br>총 점수: ${total.toLocaleString()} point`);
+    }
+    function resetAllstar4() { $('#roulette_count').val(0); $('#training_tier1, #training_tier2, #training_tier3, #training_tier4, #training_tier5, #training_tier6').val(0); $('#allstar4_result').html(""); }
     
-    // 최종 추가:
-    "5553": 165,
-    "5554": 85
-  };
-
-  function calculateGoldPieces() {
-    let skills = [
-      parseInt($('#gold_skill1').val()),
-      parseInt($('#gold_skill2').val()),
-      parseInt($('#gold_skill3').val()),
-      parseInt($('#gold_skill4').val())
-    ];
-    skills.sort((a, b) => a - b);
-    let skillKey = skills.join("");
-    let remainingGoldPieces = goldData[skillKey] || "데이터 없음";
-    $("#gold_result").html(`각성까지 필요한 조각 수: <span>${remainingGoldPieces}</span>`);
-  }
-
-  function resetFields() {
-    $('#gold_skill1, #gold_skill2, #gold_skill3, #gold_skill4').val(1);
-    $("#gold_result").html("");
-  }
-</script>
-
+    /* 그룹 4: 올스타 4일차 - 좀비 & 하이브 분리 */
+    function calculateZombieAndHive() {
+      let zombieScore = 0;
+      zombieScore += (parseInt($('#zombie_1_3').val())||0)*300;
+      zombieScore += (parseInt($('#zombie_4_6').val())||0)*600;
+      zombieScore += (parseInt($('#zombie_7_9').val())||0)*900;
+      zombieScore += (parseInt($('#zombie_10_12').val())||0)*1200;
+      zombieScore += (parseInt($('#zombie_13_15').val())||0)*1560;
+      zombieScore += (parseInt($('#zombie_16_18').val())||0)*1920;
+      zombieScore += (parseInt($('#zombie_19_20').val())||0)*2280;
+      zombieScore += (parseInt($('#zombie_21_22').val())||0)*2640;
+      zombieScore += (parseInt($('#zombie_23_24').val())||0)*3000;
+      zombieScore += (parseInt($('#zombie_25_26').val())||0)*3360;
+      zombieScore += (parseInt($('#zombie_27').val())||0)*3720;
+      zombieScore += (parseInt($('#zombie_28').val())||0)*4080;
+      zombieScore += (parseInt($('#zombie_29').val())||0)*4440;
+      zombieScore += (parseInt($('#zombie_30').val())||0)*4800;
+      let hiveScore = 0;
+      hiveScore += (parseInt($('#hive_level1_4').val())||0)*3600;
+      hiveScore += (parseInt($('#hive_level2_4').val())||0)*4800;
+      hiveScore += (parseInt($('#hive_level3_4').val())||0)*7800;
+      hiveScore += (parseInt($('#hive_level4_4').val())||0)*9600;
+      hiveScore += (parseInt($('#hive_level5_4').val())||0)*12000;
+      hiveScore += (parseInt($('#hive_level6_4').val())||0)*14400;
+      let magic = (parseInt($('#magic_ticket_4').val())||0)*12700;
+      let arrow = (parseInt($('#arrow_4').val())||0)*15000;
+      $('#zombie_result_4').html(`좀비 점수: ${zombieScore.toLocaleString()} point`);
+      $('#hive_result_4').html(`하이브 점수: ${hiveScore.toLocaleString()} point<br>매직티켓: ${magic.toLocaleString()} point, 화살: ${arrow.toLocaleString()} point`);
+    }
+    function resetZombieAndHive() {
+      $('#zombie_1_3, #zombie_4_6, #zombie_7_9, #zombie_10_12, #zombie_13_15, #zombie_16_18, #zombie_19_20, #zombie_21_22, #zombie_23_24, #zombie_25_26, #zombie_27, #zombie_28, #zombie_29, #zombie_30').val(0);
+      $('#hive_level1_4, #hive_level2_4, #hive_level3_4, #hive_level4_4, #hive_level5_4, #hive_level6_4').val(0);
+      document.getElementById('magic_ticket_4').value = 0;
+      document.getElementById('arrow_4').value = 0;
+      $('#zombie_result_4').html("");
+      $('#hive_result_4').html("");
+    }
+    
+    /* 그룹 5: 올스타 5일차 - 좀비 처치 개별 입력 */
+    function calculateZombieScoreDay5() {
+      let score = 0;
+      for(let i=1; i<=30; i++){
+        let cnt = parseInt(document.getElementById('zombie_lvl_' + i).value) || 0;
+        let pts = 0;
+        if(i>=1 && i<=3) pts = 300;
+        else if(i>=4 && i<=6) pts = 600;
+        else if(i>=7 && i<=9) pts = 900;
+        else if(i>=10 && i<=12) pts = 1200;
+        else if(i>=13 && i<=15) pts = 1560;
+        else if(i>=16 && i<=18) pts = 1920;
+        else if(i>=19 && i<=20) pts = 2280;
+        else if(i>=21 && i<=22) pts = 2640;
+        else if(i>=23 && i<=24) pts = 3000;
+        else if(i>=25 && i<=26) pts = 3360;
+        else if(i==27) pts = 3720;
+        else if(i==28) pts = 4080;
+        else if(i==29) pts = 4440;
+        else if(i==30) pts = 4800;
+        score += cnt * pts;
+      }
+      return score;
+    }
+    function calculateAllstar5() {
+      let score = 0;
+      let equipTrack = parseInt($('#hero_equip_track').val())||0;
+      score += equipTrack * 55000;
+      let craftElite = parseInt($('#hero_crafting_elite').val())||0;
+      let craftEx = parseInt($('#hero_crafting_excellent').val())||0;
+      score += craftElite * 38000 + craftEx * 1500;
+      let materialCarbon = parseInt($('#equipment_material_carbon').val())||0;
+      let materialFabric = parseInt($('#equipment_material_fabric').val())||0;
+      score += materialCarbon * 2000 + materialFabric * 200;
+      let moduleBasic = parseInt($('#module_material_basic').val())||0;
+      let moduleNormal = parseInt($('#module_material_normal').val())||0;
+      let moduleGood = parseInt($('#module_material_good').val())||0;
+      let moduleElite = parseInt($('#module_material_elite').val())||0;
+      let moduleLegend = parseInt($('#module_material_legend').val())||0;
+      let moduleSupreme = parseInt($('#module_material_supreme').val())||0;
+      score += moduleBasic*750 + moduleNormal*2250 + moduleGood*6750 + moduleElite*20250 + moduleLegend*60750 + moduleSupreme*182250;
+      let polymerBasic = parseInt($('#polymer_material_basic').val())||0;
+      let polymerNormal = parseInt($('#polymer_material_normal').val())||0;
+      let polymerGood = parseInt($('#polymer_material_good').val())||0;
+      let polymerElite = parseInt($('#polymer_material_elite').val())||0;
+      let polymerLegend = parseInt($('#polymer_material_legend').val())||0;
+      let polymerSupreme = parseInt($('#polymer_material_supreme').val())||0;
+      score += polymerBasic*3750 + polymerNormal*11250 + polymerGood*33750 + polymerElite*101250 + polymerLegend*303750 + polymerSupreme*911250;
+      score += calculateZombieScoreDay5();
+      let mt = parseInt($('#magic_ticket_day5').val())||0;
+      let ar = parseInt($('#arrow_day5').val())||0;
+      let wc = parseInt($('#weapon_card').val())||0;
+      score += mt*12700 + ar*15000 + wc*12000;
+      $('#allstar5_result').html(`총 5일차 점수: ${score.toLocaleString()} point`);
+    }
+    function resetAllstar5() {
+      $('#hero_equip_track, #hero_crafting_elite, #hero_crafting_excellent, #equipment_material_carbon, #equipment_material_fabric, #module_material_basic, #module_material_normal, #module_material_good, #module_material_elite, #module_material_legend, #module_material_supreme, #polymer_material_basic, #polymer_material_normal, #polymer_material_good, #polymer_material_elite, #polymer_material_legend, #polymer_material_supreme, #magic_ticket_day5, #arrow_day5, #weapon_card').val(0);
+      for(let i=1; i<=30; i++){
+        document.getElementById('zombie_lvl_' + i).value = 0;
+      }
+      $('#allstar5_result').html("");
+    }
+  </script>
 </body>
 </html>
