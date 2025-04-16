@@ -144,7 +144,15 @@
     }
 
     /* 그리드 레이아웃 업데이트 */
-    .accel-container, .skill-inputs, .allstar-container,
+    .accel-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);  /* 2열 레이아웃으로 변경 */
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* 나머지 그리드 레이아웃은 유지 */
+    .skill-inputs, .allstar-container,
     .allstar2-container, .medal-container, .zombie-container,
     .hive-container, .roulette-container, .training-container {
       display: grid;
