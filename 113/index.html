@@ -7,130 +7,231 @@
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
   <style>
     /* 기본 스타일 */
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4895ef;
+      --danger-color: #f72585;
+      --background-color: #f8f9fa;
+      --card-background: #ffffff;
+      --text-primary: #2b2d42;
+      --text-secondary: #6c757d;
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    /* 오디오 플레이어 스타일 업데이트 */
     .audio-player {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin: 10px 0;
+      background: var(--card-background);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
     }
+
     .audio-player button {
-      padding: 8px 16px;
-      font-size: 16px;
-      background-color: #007bff;
-      color: #fff;
+      background: var(--primary-color);
+      color: white;
       border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      transition: var(--transition);
+      margin: 0 0.5rem;
     }
+
+    .audio-player button:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    /* 탭 네비게이션 스타일 업데이트 */
     .tabs {
       display: flex;
-      justify-content: center;
-      border-bottom: 1px solid #ccc;
-      margin-bottom: 20px;
+      gap: 1rem;
+      background: var(--card-background);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      overflow-x: auto;
     }
+
     .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      background-color: #f8f9fa;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      margin-right: 2px;
-      font-size: 14px;
-    }
-    .tab.active {
-      background-color: #fff;
-      font-weight: bold;
-    }
-    .tab-content {
-      display: none;
-      border: 1px solid #ccc;
-      padding: 15px;
-      background-color: #fff;
-    }
-    .container {
-      width: 90%;
-      max-width: 400px;
-      margin: 20px auto;
-    }
-    /* 공통 입력/버튼 스타일 */
-    .accel-container, .skill-inputs, .allstar-container, .allstar2-container, .medal-container,
-    .zombie-container, .hive-container, .roulette-container, .training-container {
-      margin-bottom: 15px;
-      display: grid;
-      gap: 10px 20px;
-    }
-    .accel-container { grid-template-columns: repeat(2, 1fr); }
-    .allstar-container { grid-template-columns: repeat(3, 1fr); }
-    .allstar2-container, .medal-container, .zombie-container, .hive-container, .roulette-container { grid-template-columns: repeat(2, 1fr); }
-    .training-container { grid-template-columns: repeat(3, 1fr); }
-    .accel-input, .skill-input, .allstar-input, .allstar2-input, .medal-input, .zombie-input, .hive-input, .roulette-input, .training-input {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .accel-input label, .skill-input label, .allstar-input label, .allstar2-input label, .medal-input label,
-    .zombie-input label, .hive-input label, .roulette-input label, .training-input label {
-      margin-bottom: 5px;
-      font-size: 16px;
-      color: #333;
-    }
-    .accel-input input, .skill-input input, .allstar-input input, .allstar2-input input, .medal-input input,
-    .zombie-input input, .hive-input input, .roulette-input input, .training-input input {
-      width: 100%;
-      padding: 10px;
-      font-size: 18px;
-      text-align: center;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .calculate-btn, .reset-btn {
-      width: 48%;
-      padding: 10px;
-      font-size: 16px;
-      color: #fff;
+      padding: 1rem 2rem;
+      background: transparent;
       border: none;
-      border-radius: 5px;
+      color: var(--text-secondary);
+      font-weight: 600;
       cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      border-radius: var(--border-radius);
     }
-    .calculate-btn { background-color: #007bff; }
-    .reset-btn { background-color: #dc3545; }
-    /* 하위 탭(일차) 버튼 스타일 */
-    .day-btn {
-      padding: 8px 12px;
-      margin: 0 4px;
-      border: 1px solid #007bff;
-      background-color: #fff;
-      color: #007bff;
+
+    .tab.active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .tab:hover:not(.active) {
+      background: rgba(67, 97, 238, 0.1);
+    }
+
+    /* 컨텐츠 영역 스타일 업데이트 */
+    .tab-content {
+      background: var(--card-background);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    /* 입력 필드 스타일 업데이트 */
+    input[type="number"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #e9ecef;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    /* 버튼 스타일 업데이트 */
+    .calculate-btn, .reset-btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
       cursor: pointer;
-      border-radius: 4px;
+      transition: var(--transition);
+      margin: 0.5rem;
     }
-    .day-btn.active {
-      background-color: #007bff;
-      color: #fff;
+
+    .calculate-btn {
+      background: var(--primary-color);
+      color: white;
     }
-    /* 하위 탭 컨텐츠 */
-    .day-content { display: none; }
-    /* 그룹 영역 */
-    .allstar-group {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 20px;
+
+    .reset-btn {
+      background: var(--danger-color);
+      color: white;
     }
-    .allstar-group h3, .allstar-group h4 {
-      margin-top: 0;
+
+    .calculate-btn:hover, .reset-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
-    /* 반응형 */
-    @media (max-width: 480px) {
-      .container { width: 95%; padding: 20px; }
-      .tab { padding: 8px 12px; font-size: 14px; }
-      .accel-input label, .skill-input label, .allstar-input label, .allstar2-input label, .medal-input label {
-        font-size: 14px;
+
+    /* 그리드 레이아웃 업데이트 */
+    .accel-container, .skill-inputs, .allstar-container,
+    .allstar2-container, .medal-container, .zombie-container,
+    .hive-container, .roulette-container, .training-container {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* 결과 텍스트 스타일 */
+    p[id$="_result"] {
+      background: #e9ecef;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    /* 채팅방 버튼 스타일 업데이트 */
+    .chat-buttons a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      margin: 0.5rem;
+      background: var(--card-background);
+      color: var(--text-primary);
+      text-decoration: none;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+    }
+
+    .chat-buttons a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .chat-buttons img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    /* 반응형 디자인 개선 */
+    @media (max-width: 768px) {
+      .container {
+        width: 100%;
+        padding: 1rem;
       }
-      .accel-input input, .skill-input input, .allstar-input input, .allstar2-input input, .medal-input input {
-        font-size: 16px; padding: 8px;
+
+      .tabs {
+        padding: 0.5rem;
       }
-      .calculate-btn, .reset-btn { font-size: 14px; padding: 8px; }
+
+      .tab {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+      }
+
+      .tab-content {
+        padding: 1rem;
+      }
+
+      .accel-container, .skill-inputs, .allstar-container,
+      .allstar2-container, .medal-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 다크 모드 지원 */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #1a1b1e;
+        --card-background: #2b2d42;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+      }
+
+      input[type="number"] {
+        background: #3a3b3e;
+        color: white;
+        border-color: #4a4b4e;
+      }
+
+      p[id$="_result"] {
+        background: #3a3b3e;
+        color: white;
+      }
     }
   </style>
   <script>
