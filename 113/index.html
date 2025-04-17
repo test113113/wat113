@@ -324,7 +324,6 @@
         </a>
 </div>
 <!-- 탭 5: 폼페이 신청 -->
-
 </div><div class="tab-content" id="tab5" style="text-align: center;">
 <h3>폼페이 참여 신청</h3>
 <form id="pompeii-form">
@@ -353,34 +352,38 @@
 </form>
 </div>
 </div>
-
 <script>
-function submitPompeiiForm(event) {
-  event.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("pompeii-form");
+  if (form) {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-  const data = {
-    nickname: document.getElementById("nickname").value,
-    power: document.getElementById("power").value,
-    troop: document.getElementById("troop").value,
-    agree: document.getElementById("agree").checked
-  };
+      const data = {
+        nickname: document.getElementById("nickname").value,
+        power: document.getElementById("power").value,
+        troop: document.getElementById("troop").value,
+        agree: document.getElementById("agree").checked
+      };
 
-  fetch("https://hook.us2.make.com/phxaxog83hbr1xqekj8fpggie17mgxr4", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).then(response => {
-    if (response.ok) {
-      alert("신청이 완료되었습니다!");
-      document.getElementById("pompeii-form").reset();
-    } else {
-      alert("신청 중 오류가 발생했습니다.");
-    }
-  }).catch(error => {
-    alert("서버 오류가 발생했습니다.");
-  });
-}
+      fetch("https://hook.us2.make.com/phxaxog83hbr1xqekj8fpggie17mgxr4", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      }).then(response => {
+        if (response.ok) {
+          alert("신청이 완료되었습니다!");
+          form.reset();
+        } else {
+          alert("신청 중 오류가 발생했습니다.");
+        }
+      }).catch(error => {
+        alert("서버 오류가 발생했습니다.");
+      });
+    });
+  }
+});
 </script></body>
 </html>
