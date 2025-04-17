@@ -59,3 +59,19 @@ function setupAudioPlayer() {
   volumeDown.addEventListener('click', ()=> adjustVolume(-1));
   volumeUp.addEventListener('click', ()=> adjustVolume(1));
 }
+$(document).ready(function() {
+  $(".tab").click(function() {
+    var tabId = $(this).data("tab");
+
+    $(".tab").removeClass("active");
+    $(".tab-content").hide();
+
+    $(this).addClass("active");
+    $("#" + tabId).show();
+  });
+
+  // 초기 탭 설정
+  $(".tab").first().addClass("active");
+  $(".tab-content").hide();
+  $(".tab-content").first().show();
+});
