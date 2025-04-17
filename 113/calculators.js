@@ -202,3 +202,34 @@ function resetFields() {
       }
       $('#allstar5_result').html("");
     }
+/* 영웅 훈장 계산기 */
+function calculateMedals() {
+  // 전설 훈장 포인트 (Legend medal points)
+  let legendL = (parseInt($('#legend_L').val()) || 0) * 10000;
+  let legendM = (parseInt($('#legend_M').val()) || 0) * 5000;
+  let legendS = (parseInt($('#legend_S').val()) || 0) * 2000;
+  
+  // 정예 훈장 포인트 (Elite medal points)
+  let eliteL = (parseInt($('#elite_L').val()) || 0) * 1000;
+  let eliteM = (parseInt($('#elite_M').val()) || 0) * 500;
+  let eliteS = (parseInt($('#elite_S').val()) || 0) * 200;
+  
+  // 각 카테고리별 합계
+  let legendTotal = legendL + legendM + legendS;
+  let eliteTotal = eliteL + eliteM + eliteS;
+  let totalPoints = legendTotal + eliteTotal;
+  
+  // 결과 표시
+  $('#medal_result').html(
+    `전설 훈장 점수: ${legendTotal.toLocaleString()} point<br>` +
+    `정예 훈장 점수: ${eliteTotal.toLocaleString()} point<br>` +
+    `총 훈장 점수: ${totalPoints.toLocaleString()} point`
+  );
+}
+
+function resetMedals() {
+  // 모든 입력 필드 초기화
+  $('#legend_L, #legend_M, #legend_S, #elite_L, #elite_M, #elite_S').val(0);
+  // 결과 텍스트 초기화
+  $('#medal_result').html("");
+}
