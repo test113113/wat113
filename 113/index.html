@@ -354,5 +354,33 @@
 </div>
 </div>
 
-</body>
+<script>
+function submitPompeiiForm(event) {
+  event.preventDefault();
+
+  const data = {
+    nickname: document.getElementById("nickname").value,
+    power: document.getElementById("power").value,
+    troop: document.getElementById("troop").value,
+    agree: document.getElementById("agree").checked
+  };
+
+  fetch("https://hook.us2.make.com/phxaxog83hbr1xqekj8fpggie17mgxr4", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  }).then(response => {
+    if (response.ok) {
+      alert("신청이 완료되었습니다!");
+      document.getElementById("pompeii-form").reset();
+    } else {
+      alert("신청 중 오류가 발생했습니다.");
+    }
+  }).catch(error => {
+    alert("서버 오류가 발생했습니다.");
+  });
+}
+</script></body>
 </html>
