@@ -29,6 +29,311 @@
     
     <!-- 탭 콘텐츠들 (기존 HTML 그대로 유지) -->
     <!-- ... 기존 HTML 내용 ... -->
+     <!-- 탭 1: 가속계산기 (기존 그대로) -->
+    <div id="tab1" class="tab-content">
+      <h3>가속계산기</h3>
+      <div class="accel-container">
+        <div class="accel-input"><label for="accel_1">1분</label><input type="number" id="accel_1" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_5">5분</label><input type="number" id="accel_5" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_15">15분</label><input type="number" id="accel_15" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_30">30분</label><input type="number" id="accel_30" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_60">60분</label><input type="number" id="accel_60" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_4h">4시간</label><input type="number" id="accel_4h" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_8h">8시간</label><input type="number" id="accel_8h" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_12h">12시간</label><input type="number" id="accel_12h" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_15h">15시간</label><input type="number" id="accel_15h" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_1d">1일</label><input type="number" id="accel_1d" value="0" min="0"></div>
+        <div class="accel-input"><label for="accel_3d">3일</label><input type="number" id="accel_3d" value="0" min="0"></div>
+      </div>
+      <div class="accel-buttons">
+        <button class="calculate-btn" onclick="calculateAcceleration()">조회하기</button>
+        <button class="reset-btn" onclick="resetAcceleration()">초기화</button>
+      </div>
+      <p id="accel_result"></p>
+      <button id="accel_score_btn" onclick="calculateAccelScore()">올스타 1일차 임의가속 점수계산</button>
+    </div>
+    
+    <!-- 탭 2: 황금 조각 계산기 (원래대로 복구) -->
+    <div id="tab2" class="tab-content">
+      <h3>황금 조각 계산기</h3>
+      <div class="skill-inputs">
+        <div class="skill-input">
+          <label for="gold_skill1">1번 스킬</label>
+          <input type="number" id="gold_skill1" value="1" min="1" max="6">
+        </div>
+        <div class="skill-input">
+          <label for="gold_skill2">2번 스킬</label>
+          <input type="number" id="gold_skill2" value="1" min="1" max="6">
+        </div>
+        <div class="skill-input">
+          <label for="gold_skill3">3번 스킬</label>
+          <input type="number" id="gold_skill3" value="1" min="1" max="6">
+        </div>
+        <div class="skill-input">
+          <label for="gold_skill4">4번 스킬</label>
+          <input type="number" id="gold_skill4" value="1" min="1" max="6">
+        </div>
+      </div>
+      <div class="buttons">
+        <button class="calculate-btn" onclick="calculateGoldPieces()">조회하기</button>
+        <button class="reset-btn" onclick="resetFields()">초기화</button>
+      </div>
+      <p id="gold_result"></p>
+    </div>
+    
+    <!-- 탭 3: 올스타 계산기 - 하위 일차 탭으로 분리 -->
+    <div id="tab3" class="tab-content">
+      <!-- 하위 탭 버튼 -->
+      <div id="day-buttons" style="text-align: center; margin-bottom: 10px;">
+        <button class="day-btn" data-day="day1">1일차</button>
+        <button class="day-btn" data-day="day2">2일차</button>
+        <button class="day-btn" data-day="day3">3일차</button>
+        <button class="day-btn" data-day="day4">4일차</button>
+        <button class="day-btn" data-day="day5">5일차</button>
+      </div>
+      
+      <!-- Day 1: 올스타 1일차 (가속 계산기) -->
+      <div id="day1" class="day-content">
+        <div class="allstar-group">
+          <h3>올스타 1일차 계산기</h3>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="allstar_days">일</label><input type="number" id="allstar_days" value="0" min="0"></div>
+            <div class="allstar-input"><label for="allstar_hours">시간</label><input type="number" id="allstar_hours" value="0" min="0"></div>
+            <div class="allstar-input"><label for="allstar_minutes">분</label><input type="number" id="allstar_minutes" value="0" min="0"></div>
+          </div>
+          <div class="allstar-buttons">
+            <button class="calculate-btn" onclick="calculateAllstar()">조회하기</button>
+            <button class="reset-btn" onclick="resetAllstar()">초기화</button>
+          </div>
+          <p id="allstar_result"></p>
+        </div>
+      </div>
+      
+      <!-- Day 2: 올스타 2일차 (영웅 탐색 & 영웅 훈장 계산기) -->
+      <div id="day2" class="day-content" style="display:none;">
+        <div class="allstar-group">
+          <h3>올스타 2일차 계산기 - 영웅 탐색 & 영웅 훈장 계산기</h3>
+          <div class="allstar2-container">
+            <div class="allstar2-input"><label for="hero_normal">일반 탐색 개수</label><input type="number" id="hero_normal" value="0" min="0"></div>
+            <div class="allstar2-input"><label for="hero_advanced">고급 탐색 개수</label><input type="number" id="hero_advanced" value="0" min="0"></div>
+          </div>
+          <div class="allstar2-buttons">
+            <button class="calculate-btn" onclick="calculateAllstar2()">조회하기</button>
+            <button class="reset-btn" onclick="resetAllstar2()">초기화</button>
+          </div>
+          <p id="allstar2_result"></p>
+          <div class="medal-container">
+            <div class="medal-input"><label for="legend_L">전설 훈장 L</label><input type="number" id="legend_L" value="0" min="0"></div>
+            <div class="medal-input"><label for="legend_M">전설 훈장 M</label><input type="number" id="legend_M" value="0" min="0"></div>
+            <div class="medal-input"><label for="legend_S">전설 훈장 S</label><input type="number" id="legend_S" value="0" min="0"></div>
+            <div class="medal-input"><label for="elite_L">정예 훈장 L</label><input type="number" id="elite_L" value="0" min="0"></div>
+            <div class="medal-input"><label for="elite_M">정예 훈장 M</label><input type="number" id="elite_M" value="0" min="0"></div>
+            <div class="medal-input"><label for="elite_S">정예 훈장 S</label><input type="number" id="elite_S" value="0" min="0"></div>
+          </div>
+          <div class="medal-buttons">
+            <button class="calculate-btn" onclick="calculateMedals()">조회하기</button>
+            <button class="reset-btn" onclick="resetMedals()">초기화</button>
+          </div>
+          <p id="medal_result"></p>
+        </div>
+      </div>
+      
+      <!-- Day 3: 올스타 3일차 (룰렛 및 부대훈련) -->
+      <div id="day3" class="day-content" style="display:none;">
+        <div class="allstar-group">
+          <h3>올스타 3일차 계산기 - 룰렛 및 부대훈련</h3>
+          <div class="allstar4-container">
+            <div class="roulette-input">
+              <label for="roulette_count">룰렛 개수</label>
+              <input type="number" id="roulette_count" value="0" min="0">
+            </div>
+            <div class="training-container">
+              <div class="training-input"><label for="training_tier1">부대훈련 1티어</label><input type="number" id="training_tier1" value="0" min="0"></div>
+              <div class="training-input"><label for="training_tier2">부대훈련 2티어</label><input type="number" id="training_tier2" value="0" min="0"></div>
+              <div class="training-input"><label for="training_tier3">부대훈련 3티어</label><input type="number" id="training_tier3" value="0" min="0"></div>
+              <div class="training-input"><label for="training_tier4">부대훈련 4티어</label><input type="number" id="training_tier4" value="0" min="0"></div>
+              <div class="training-input"><label for="training_tier5">부대훈련 5티어</label><input type="number" id="training_tier5" value="0" min="0"></div>
+              <div class="training-input"><label for="training_tier6">부대훈련 6티어</label><input type="number" id="training_tier6" value="0" min="0"></div>
+            </div>
+          </div>
+          <div class="allstar4-buttons">
+            <button class="calculate-btn" onclick="calculateAllstar4()">조회하기</button>
+            <button class="reset-btn" onclick="resetAllstar4()">초기화</button>
+          </div>
+          <p id="allstar4_result"></p>
+        </div>
+      </div>
+      
+      <!-- Day 4: 올스타 4일차 (좀비 & 하이브 분리, 매직티켓 & 화살) -->
+      <div id="day4" class="day-content" style="display:none;">
+        <div class="allstar-group">
+          <h3>올스타 4일차 계산기 - 좀비 & 하이브 분리</h3>
+          <div>
+            <h4>좀비 계산기 (레벨별 그룹)</h4>
+            <div class="zombie-container">
+              <div class="zombie-input"><label for="zombie_1_3">좀비 1~3렙</label><input type="number" id="zombie_1_3" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_4_6">좀비 4~6렙</label><input type="number" id="zombie_4_6" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_7_9">좀비 7~9렙</label><input type="number" id="zombie_7_9" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_10_12">좀비 10~12렙</label><input type="number" id="zombie_10_12" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_13_15">좀비 13~15렙</label><input type="number" id="zombie_13_15" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_16_18">좀비 16~18렙</label><input type="number" id="zombie_16_18" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_19_20">좀비 19~20렙</label><input type="number" id="zombie_19_20" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_21_22">좀비 21~22렙</label><input type="number" id="zombie_21_22" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_23_24">좀비 23~24렙</label><input type="number" id="zombie_23_24" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_25_26">좀비 25~26렙</label><input type="number" id="zombie_25_26" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_27">좀비 27렙</label><input type="number" id="zombie_27" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_28">좀비 28렙</label><input type="number" id="zombie_28" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_29">좀비 29렙</label><input type="number" id="zombie_29" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_30">좀비 30렙</label><input type="number" id="zombie_30" value="0" min="0"></div>
+            </div>
+          </div>
+          <div>
+            <h4>하이브 마인드 계산기</h4>
+            <div class="hive-container">
+              <div class="hive-input"><label for="hive_level1_4">하이브 레벨1</label><input type="number" id="hive_level1_4" value="0" min="0"></div>
+              <div class="hive-input"><label for="hive_level2_4">하이브 레벨2</label><input type="number" id="hive_level2_4" value="0" min="0"></div>
+              <div class="hive-input"><label for="hive_level3_4">하이브 레벨3</label><input type="number" id="hive_level3_4" value="0" min="0"></div>
+              <div class="hive-input"><label for="hive_level4_4">하이브 레벨4</label><input type="number" id="hive_level4_4" value="0" min="0"></div>
+              <div class="hive-input"><label for="hive_level5_4">하이브 레벨5</label><input type="number" id="hive_level5_4" value="0" min="0"></div>
+              <div class="hive-input"><label for="hive_level6_4">하이브 레벨6</label><input type="number" id="hive_level6_4" value="0" min="0"></div>
+            </div>
+          </div>
+          <div>
+            <h4>매직티켓 & 화살</h4>
+            <div class="roulette-container">
+              <div class="roulette-input"><label for="magic_ticket_4">매직티켓</label><input type="number" id="magic_ticket_4" value="0" min="0"></div>
+              <div class="roulette-input"><label for="arrow_4">화살</label><input type="number" id="arrow_4" value="0" min="0"></div>
+            </div>
+          </div>
+          <div>
+            <button class="calculate-btn" onclick="calculateZombieAndHive()">조회하기</button>
+            <button class="reset-btn" onclick="resetZombieAndHive()">초기화</button>
+          </div>
+          <p id="zombie_result_4"></p>
+          <p id="hive_result_4"></p>
+        </div>
+      </div>
+      
+      <!-- 그룹 5: 올스타 5일차 -->
+      <div id="day5" class="day-content" style="display:none;">
+        <div class="allstar-group">
+          <h3>올스타 5일차 계산기</h3>
+          <!-- 좀비 처치 (개별 입력 1~30) -->
+          <div class="group5-section">
+            <h4>좀비 처치 (레벨 1~30, 개별 입력)</h4>
+            <div class="zombie-container individual" style="grid-template-columns: repeat(5, 1fr);">
+              <!-- 레벨 1 ~ 30 개별 입력 -->
+              <!-- 예시: -->
+              <div class="zombie-input"><label for="zombie_lvl_1">1</label><input type="number" id="zombie_lvl_1" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_2">2</label><input type="number" id="zombie_lvl_2" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_3">3</label><input type="number" id="zombie_lvl_3" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_4">4</label><input type="number" id="zombie_lvl_4" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_5">5</label><input type="number" id="zombie_lvl_5" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_6">6</label><input type="number" id="zombie_lvl_6" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_7">7</label><input type="number" id="zombie_lvl_7" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_8">8</label><input type="number" id="zombie_lvl_8" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_9">9</label><input type="number" id="zombie_lvl_9" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_10">10</label><input type="number" id="zombie_lvl_10" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_11">11</label><input type="number" id="zombie_lvl_11" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_12">12</label><input type="number" id="zombie_lvl_12" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_13">13</label><input type="number" id="zombie_lvl_13" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_14">14</label><input type="number" id="zombie_lvl_14" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_15">15</label><input type="number" id="zombie_lvl_15" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_16">16</label><input type="number" id="zombie_lvl_16" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_17">17</label><input type="number" id="zombie_lvl_17" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_18">18</label><input type="number" id="zombie_lvl_18" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_19">19</label><input type="number" id="zombie_lvl_19" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_20">20</label><input type="number" id="zombie_lvl_20" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_21">21</label><input type="number" id="zombie_lvl_21" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_22">22</label><input type="number" id="zombie_lvl_22" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_23">23</label><input type="number" id="zombie_lvl_23" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_24">24</label><input type="number" id="zombie_lvl_24" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_25">25</label><input type="number" id="zombie_lvl_25" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_26">26</label><input type="number" id="zombie_lvl_26" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_27">27</label><input type="number" id="zombie_lvl_27" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_28">28</label><input type="number" id="zombie_lvl_28" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_29">29</label><input type="number" id="zombie_lvl_29" value="0" min="0"></div>
+              <div class="zombie-input"><label for="zombie_lvl_30">30</label><input type="number" id="zombie_lvl_30" value="0" min="0"></div>
+            </div>
+          </div>
+        </div>
+        <!-- 나머지 항목은 기존 그대로 -->
+        <div class="group5-section">
+          <h4>영웅 장비 추적</h4>
+          <div class="allstar-input"><label for="hero_equip_track">추적 횟수</label><input type="number" id="hero_equip_track" value="0" min="0"></div>
+        </div>
+        <div class="group5-section">
+          <h4>영웅 장비 세공</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="hero_crafting_elite">정예 세공칩</label><input type="number" id="hero_crafting_elite" value="0" min="0"></div>
+            <div class="allstar-input"><label for="hero_crafting_excellent">우수 세공칩</label><input type="number" id="hero_crafting_excellent" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <h4>장비재료 사용</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="equipment_material_carbon">탄소강</label><input type="number" id="equipment_material_carbon" value="0" min="0"></div>
+            <div class="allstar-input"><label for="equipment_material_fabric">방어용 원단</label><input type="number" id="equipment_material_fabric" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <h4>모듈 재료 사용 (폴리/탄창/복합)</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="module_material_basic">기본</label><input type="number" id="module_material_basic" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_normal">보통</label><input type="number" id="module_material_normal" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_good">우수</label><input type="number" id="module_material_good" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_elite">정예</label><input type="number" id="module_material_elite" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_legend">전설</label><input type="number" id="module_material_legend" value="0" min="0"></div>
+            <div class="allstar-input"><label for="module_material_supreme">지존</label><input type="number" id="module_material_supreme" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <h4>기본 고분자 재료 사용</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="polymer_material_basic">기본</label><input type="number" id="polymer_material_basic" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_normal">보통</label><input type="number" id="polymer_material_normal" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_good">우수</label><input type="number" id="polymer_material_good" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_elite">정예</label><input type="number" id="polymer_material_elite" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_legend">전설</label><input type="number" id="polymer_material_legend" value="0" min="0"></div>
+            <div class="allstar-input"><label for="polymer_material_supreme">지존</label><input type="number" id="polymer_material_supreme" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <h4>추가: 매직티켓, 화살, 무기고 카드</h4>
+          <div class="allstar-container">
+            <div class="allstar-input"><label for="magic_ticket_day5">매직티켓</label><input type="number" id="magic_ticket_day5" value="0" min="0"></div>
+            <div class="allstar-input"><label for="arrow_day5">화살</label><input type="number" id="arrow_day5" value="0" min="0"></div>
+            <div class="allstar-input"><label for="weapon_card">무기고 카드</label><input type="number" id="weapon_card" value="0" min="0"></div>
+          </div>
+        </div>
+        <div class="group5-section">
+          <button class="calculate-btn" onclick="calculateAllstar5()">전체 5일차 점수 계산</button>
+          <button class="reset-btn" onclick="resetAllstar5()">초기화</button>
+        </div>
+        <p id="allstar5_result"></p>
+      </div>
+    </div>
+    
+    <!-- 탭 4: 채팅방 정보 (원래대로 복구) -->
+    <div id="tab4" class="tab-content" style="text-align: center;">
+      <h3>채팅방 정보</h3>
+      <div class="chat-buttons">
+        <a href="https://discord.gg/cNB7EXAG" target="_blank" class="discord-btn">
+          <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png" alt="Discord" width="20" height="20">
+          디스코드 음성 채팅방
+        </a></br>
+        <a href="https://open.kakao.com/o/gYSwy1df" target="_blank" class="kakao-btn">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk" width="20" height="20">
+          카카오톡 수다 채팅방
+        </a></br>
+        <a href="https://open.kakao.com/o/gyOcvYmf" target="_blank" class="kakao-btn">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcfeANA8NkxzhS8gUJE9oYfkzlcUjT6p5VBg&s" alt="KakaoTalk" width="20" height="20">
+          카카오톡 공지 채팅방
+        </a></br>
+      </div>
+    </div>
+  </div>
+
   </div>
 </body>
 </html>
