@@ -1,0 +1,237 @@
+<style>
+    /* 기본 스타일 */
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4895ef;
+      --danger-color: #f72585;
+      --background-color: #f8f9fa;
+      --card-background: #ffffff;
+      --text-primary: #2b2d42;
+      --text-secondary: #6c757d;
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    /* 오디오 플레이어 스타일 업데이트 */
+    .audio-player {
+      background: var(--card-background);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .audio-player button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      transition: var(--transition);
+      margin: 0 0.5rem;
+    }
+
+    .audio-player button:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    /* 탭 네비게이션 스타일 업데이트 */
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      background: var(--card-background);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    .tab {
+      padding: 1rem 2rem;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      border-radius: var(--border-radius);
+    }
+
+    .tab.active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .tab:hover:not(.active) {
+      background: rgba(67, 97, 238, 0.1);
+    }
+
+    /* 컨텐츠 영역 스타일 업데이트 */
+    .tab-content {
+      background: var(--card-background);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    /* 입력 필드 스타일 업데이트 */
+    input[type="number"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #e9ecef;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    /* 버튼 스타일 업데이트 */
+    .calculate-btn, .reset-btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin: 0.5rem;
+    }
+
+    .calculate-btn {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .reset-btn {
+      background: var(--danger-color);
+      color: white;
+    }
+
+    .calculate-btn:hover, .reset-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 그리드 레이아웃 업데이트 */
+    .accel-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);  /* 2열 레이아웃으로 변경 */
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* 나머지 그리드 레이아웃은 유지 */
+    .skill-inputs, .allstar-container,
+    .allstar2-container, .medal-container, .zombie-container,
+    .hive-container, .roulette-container, .training-container {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* 결과 텍스트 스타일 */
+    p[id$="_result"] {
+      background: #e9ecef;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    /* 채팅방 버튼 스타일 업데이트 */
+    .chat-buttons a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      margin: 0.5rem;
+      background: var(--card-background);
+      color: var(--text-primary);
+      text-decoration: none;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+    }
+
+    .chat-buttons a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .chat-buttons img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    /* 반응형 디자인 개선 */
+    @media (max-width: 768px) {
+      .container {
+        width: 100%;
+        padding: 1rem;
+      }
+
+      .tabs {
+        padding: 0.5rem;
+      }
+
+      .tab {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+      }
+
+      .tab-content {
+        padding: 1rem;
+      }
+
+      .accel-container, .skill-inputs, .allstar-container,
+      .allstar2-container, .medal-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 다크 모드 지원 */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #1a1b1e;
+        --card-background: #2b2d42;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+      }
+
+      input[type="number"] {
+        background: #3a3b3e;
+        color: white;
+        border-color: #4a4b4e;
+      }
+
+      p[id$="_result"] {
+        background: #3a3b3e;
+        color: white;
+      }
+    }
+  </style>
